@@ -10,14 +10,42 @@
 <body>
   <!-- Экран 1: Каталог -->
   <div id="main">
-    <h1>Магазин</h1>
-    <img src="https://cdn-icons-png.flaticon.com/512/3595/3595455.png" alt="Icon" />
+    <img src="https://suborbia.ru/image/catalog/logo2.png" alt="Icon" />
     <p>Добро пожаловать в наш магазин! Нажмите "Купить", чтобы оформить заказ.</p>
     <button id="buy">Купить</button>
   </div>
 
-  <!-- Экран 2: Форма -->
+  <!-- Экран 2: Каталог товаров -->
+  <div id="catalog" style="display: none;">
+    <h1>Каталог товаров</h1>
+    <div class="catalog-container">
+      <div class="product">
+        <img src="https://suborbia.ru/image/cache/catalog/demo/syncms/jkRFnXY9hU-yNd-z-144H3_0-1500x1875.jpg" alt="Джинсы CASUAL ARMOR Graphite">
+        <h3>Джинсы CASUAL ARMOR Graphite</h3>
+        <p><b>Размеры:</b> <u>M 164 см</u> | <u>M 170 см</u> | <u>S 164 см</u> | <u>S 170 см</u></p>
+        <p><b>Цена:</b> <u>10900 ₽</u></p>
+        <button class="product-buy" data-title="Джинсы CASUAL ARMOR Graphite">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://suborbia.ru/image/cache/catalog/demo/syncms/nl1Le5DrjDRjhXPPI0nO70_0-1500x1875.JPG" alt="Худи ZIP TERMINAL S crystal rose">
+        <h3>Худи ZIP TERMINAL S crystal rose</h3>
+        <p><b>Размеры:</b> <u>M/L</u> | </u>S/M</u></p>
+        <p><b>Цена:</b> <u>11500 ₽</u></p>
+        <button class="product-buy" data-title="Худи ZIP TERMINAL S crystal rose">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://suborbia.ru/image/cache/catalog/demo/syncms/fRUXA8APhdfSiJtAVzQSQ0_0-1500x1875.JPEG" alt="Шапка KNITTED Burgundy">
+        <h3>Шапка KNITTED Burgundy</h3>
+        <p><b>Цена:</b> <u>2940.00 ₽</u></p>
+        <button class="product-buy" data-title="Шапка KNITTED Burgundy">Купить</button>
+      </div>
+    </div>
+</div>
+
+
+  <!-- Экран 3: Форма -->
   <div id="form">
+    <img src="https://suborbia.ru/image/catalog/logo2.png" alt="Icon" />
     <h1>Оформление</h1>
     <input type="text" id="user_name" placeholder="Имя" />
     <input type="email" id="user_email" placeholder="Email" />
@@ -30,12 +58,26 @@
     let tg = window.Telegram.WebApp;
     let buy = document.getElementById("buy")
     let order = document.getElementById("order")
+    let catalog = document.getElementById("catalog")
+
     tg.expand();
 
     buy.addEventListener("click", () => {
       document.getElementById("main").style.display = "none";
+      document.getElementById("catalog").style.display = "block";
+    })
+
+    catalog.addEventListener("click", function(e) {
+    if (e.target.classList.contains("product-buy")) {
+      const productTitle = e.target.dataset.title;
+      document.getElementById("catalog").style.display = "none";
       document.getElementById("form").style.display = "block";
-      document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
+
+      // Заполнение имени из Telegram
+      const firstName = tg.initDataUnsafe.user?.first_name || "";
+      const lastName = tg.initDataUnsafe.user?.last_name || "";
+      document.getElementById("user_name").value = `${firstName} ${lastName}`.trim();
+    }
     })
 
     order.addEventListener("click", () => {
