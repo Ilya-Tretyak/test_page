@@ -30,7 +30,16 @@
       padding: 16px;
     }
 
-    #main, #form {
+    #main #form {
+      display: block;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 420px;
+      transition: opacity 0.3s ease;
+    }
+
+    #form {
       display: none;
       flex-direction: column;
       align-items: center;
@@ -40,7 +49,7 @@
     }
 
     .active {
-      display: flex;
+      display: block;
     }
 
     .logo-header {
