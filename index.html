@@ -29,7 +29,7 @@
       <div class="product">
         <img src="https://suborbia.ru/image/cache/catalog/demo/syncms/nl1Le5DrjDRjhXPPI0nO70_0-1500x1875.JPG" alt="Худи ZIP TERMINAL S crystal rose">
         <h3>Худи ZIP TERMINAL S crystal rose</h3>
-        <p><b>Размеры:</b> <u>M/L</u> | </u>S/M</u></p>
+        <p><b>Размеры:</b> <u>M/L</u> | <u>S/M</u></p>
         <p><b>Цена:</b> <u>11500 ₽</u></p>
         <button class="product-buy" data-title="Худи ZIP TERMINAL S crystal rose">Купить</button>
       </div>
@@ -59,6 +59,7 @@
     let buy = document.getElementById("buy")
     let order = document.getElementById("order")
     let catalog = document.getElementById("catalog")
+    let selectedProduct = null;
 
     tg.expand();
 
@@ -105,7 +106,7 @@
       let data = {
         name: name,
         email: email,
-        phone: phone
+        phone: phone,
         product: selectedProduct
       }
       tg.sendData(JSON.stringify(data));
