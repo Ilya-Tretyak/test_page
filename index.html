@@ -69,7 +69,7 @@
 
     catalog.addEventListener("click", function(e) {
     if (e.target.classList.contains("product-buy")) {
-      const productTitle = e.target.dataset.title;
+      selectedProduct = e.target.dataset.title;
       document.getElementById("catalog").style.display = "none";
       document.getElementById("form").style.display = "block";
 
@@ -97,11 +97,16 @@
         document.getElementById("error").innerText = "Ошибка в номере телефона";
         return;
       }
+      if (!selectedProduct) {
+        document.getElementById("error").innerText = "Выберите товар";
+        return;
+      }
 
       let data = {
         name: name,
         email: email,
         phone: phone
+        product: selectedProduct
       }
       tg.sendData(JSON.stringify(data));
 
