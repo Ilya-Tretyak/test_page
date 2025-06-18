@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MiniApp</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <!-- Экран 1: Каталог -->
@@ -19,32 +19,64 @@
   <div id="catalog" style="display: none;">
     <h1>Каталог товаров</h1>
     <div class="catalog-container">
+      <!-- Товар 1 -->
       <div class="product">
-        <img src="https://suborbia.ru/image/cache/catalog/demo/syncms/jkRFnXY9hU-yNd-z-144H3_0-1500x1875.jpg" alt="Джинсы CASUAL ARMOR Graphite">
+        <img src="https://suborbia.ru/image/cache/catalog/demo/syncms/jkRFnXY9hU-yNd-z-144H3_0-1500x1875.jpg" alt="Джинсы CASUAL ARMOR Graphite" />
         <h3>Джинсы CASUAL ARMOR Graphite</h3>
-        <p><b>Размеры:</b> <u>M 164 см</u> | <u>M 170 см</u> | <u>S 164 см</u> | <u>S 170 см</u></p>
+        <p><b>Размеры:</b></p>
+        <div class="size-options">
+          <label><input type="radio" name="size-casual" value="M 164 см" checked /><span>M 164 см</span></label>
+          <label><input type="radio" name="size-casual" value="M 170 см" /><span>M 170 см</span></label>
+          <label><input type="radio" name="size-casual" value="S 164 см" /><span>S 164 см</span></label>
+          <label><input type="radio" name="size-casual" value="S 170 см" /><span>S 170 см</span></label>
+        </div>
+        <p><b>Количество:</b></p>
+        <div class="quantity-control">
+          <button type="button" class="quantity-minus">−</button>
+          <input type="number" class="quantity-input" value="1" min="1" max="10" />
+          <button type="button" class="quantity-plus">+</button>
+        </div>
         <p><b>Цена:</b> <u>10900 ₽</u></p>
         <button class="product-buy" data-title="Джинсы CASUAL ARMOR Graphite">Купить</button>
       </div>
+
+      <!-- Товар 2 -->
       <div class="product">
-        <img src="https://suborbia.ru/image/cache/catalog/demo/syncms/nl1Le5DrjDRjhXPPI0nO70_0-1500x1875.JPG" alt="Худи ZIP TERMINAL S crystal rose">
+        <img src="https://suborbia.ru/image/cache/catalog/demo/syncms/nl1Le5DrjDRjhXPPI0nO70_0-1500x1875.JPG" alt="Худи ZIP TERMINAL S crystal rose" />
         <h3>Худи ZIP TERMINAL S crystal rose</h3>
-        <p><b>Размеры:</b> <u>M/L</u> | <u>S/M</u></p>
+        <p><b>Размеры:</b></p>
+        <div class="size-options">
+          <label><input type="radio" name="size-hoodie" value="M/L" checked /><span>M/L</span></label>
+          <label><input type="radio" name="size-hoodie" value="S/M" /><span>S/M</span></label>
+        </div>
+        <p><b>Количество:</b></p>
+        <div class="quantity-control">
+          <button type="button" class="quantity-minus">−</button>
+          <input type="number" class="quantity-input" value="1" min="1" max="10" />
+          <button type="button" class="quantity-plus">+</button>
+        </div>
         <p><b>Цена:</b> <u>11500 ₽</u></p>
         <button class="product-buy" data-title="Худи ZIP TERMINAL S crystal rose">Купить</button>
       </div>
+
+      <!-- Товар 3 -->
       <div class="product">
-        <img src="https://suborbia.ru/image/cache/catalog/demo/syncms/fRUXA8APhdfSiJtAVzQSQ0_0-1500x1875.JPEG" alt="Шапка KNITTED Burgundy">
+        <img src="https://suborbia.ru/image/cache/catalog/demo/syncms/fRUXA8APhdfSiJtAVzQSQ0_0-1500x1875.JPEG" alt="Шапка KNITTED Burgundy" />
         <h3>Шапка KNITTED Burgundy</h3>
+        <p><b>Количество:</b></p>
+        <div class="quantity-control">
+          <button type="button" class="quantity-minus">−</button>
+          <input type="number" class="quantity-input" value="1" min="1" max="10" />
+          <button type="button" class="quantity-plus">+</button>
+        </div>
         <p><b>Цена:</b> <u>2940.00 ₽</u></p>
         <button class="product-buy" data-title="Шапка KNITTED Burgundy">Купить</button>
       </div>
     </div>
-</div>
-
+  </div>
 
   <!-- Экран 3: Форма -->
-  <div id="form">
+  <div id="form" style="display:none;">
     <img src="https://suborbia.ru/image/catalog/logo2.png" alt="Icon" />
     <h1>Оформление</h1>
     <input type="text" id="user_name" placeholder="Имя" />
@@ -54,65 +86,6 @@
     <button type="button" id="order">Оформить заказ</button>
   </div>
 
-  <script>
-    let tg = window.Telegram.WebApp;
-    let buy = document.getElementById("buy")
-    let order = document.getElementById("order")
-    let catalog = document.getElementById("catalog")
-    let selectedProduct = null;
-
-    tg.expand();
-
-    buy.addEventListener("click", () => {
-      document.getElementById("main").style.display = "none";
-      document.getElementById("catalog").style.display = "block";
-    })
-
-    catalog.addEventListener("click", function(e) {
-    if (e.target.classList.contains("product-buy")) {
-      selectedProduct = e.target.dataset.title;
-      document.getElementById("catalog").style.display = "none";
-      document.getElementById("form").style.display = "block";
-
-      // Заполнение имени из Telegram
-      const firstName = tg.initDataUnsafe.user?.first_name || "";
-      const lastName = tg.initDataUnsafe.user?.last_name || "";
-      document.getElementById("user_name").value = `${firstName} ${lastName}`.trim();
-    }
-    })
-
-    order.addEventListener("click", () => {
-      document.getElementById("error").innerText = "";
-      let name = document.getElementById("user_name").value;
-      let email = document.getElementById("user_email").value;
-      let phone = document.getElementById("user_phone").value;
-      if (name.length < 3) {
-        document.getElementById("error").innerText = "Ошибка в имени";
-        return;
-      }
-      if (email.length < 3) {
-        document.getElementById("error").innerText = "Ошибка в email";
-        return;
-      }
-      if (phone.length < 3) {
-        document.getElementById("error").innerText = "Ошибка в номере телефона";
-        return;
-      }
-      if (!selectedProduct) {
-        document.getElementById("error").innerText = "Выберите товар";
-        return;
-      }
-
-      let data = {
-        name: name,
-        email: email,
-        phone: phone,
-        product: selectedProduct
-      }
-      tg.sendData(JSON.stringify(data));
-
-      tg.close()
-    })
-  </script>
+  <script src="scripts.js"></script>
 </body>
 </html>
