@@ -1,211 +1,207 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiniApp</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;500&display=swap");
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MiniApp</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;500&display=swap");
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #000000);
-            overflow-x: hidden;
-        }
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--tg-theme-bg-color, #ffffff);
+      color: var(--tg-theme-text-color, #000000);
+      overflow-x: hidden;
+    }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 16px;
-        }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+    }
 
-        #main, #form {
-            width: 100%;
-            max-width: 420px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 1;
-            transition: opacity 0.3s ease;
-        }
+    #main, #form {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 420px;
+      transition: opacity 0.3s ease;
+    }
 
-        .hidden {
-            display: none;
-            opacity: 0;
-            pointer-events: none;
-            position: absolute;
-        }
+    .active {
+      display: flex;
+    }
 
-        .logo-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+    .logo-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
 
-        .logo-header img {
-            width: 32px;
-            height: 32px;
-        }
+    .logo-header img {
+      width: 32px;
+      height: 32px;
+    }
 
-        h1 {
-            font-size: 22px;
-            text-align: center;
-        }
+    h1 {
+      font-size: 22px;
+      text-align: center;
+    }
 
-        img.icon {
-            width: 64px;
-            margin: 20px 0;
-        }
+    img.icon {
+      width: 64px;
+      margin: 20px 0;
+    }
 
-        p {
-            font-size: 15px;
-            line-height: 1.5;
-            text-align: center;
-            margin: 10px 0;
-        }
+    p {
+      font-size: 15px;
+      line-height: 1.5;
+      text-align: center;
+      margin: 10px 0;
+    }
 
-        button {
-            margin-top: 24px;
-            padding: 14px 24px;
-            font-size: 16px;
-            font-weight: 500;
-            border: none;
-            border-radius: 10px;
-            color: var(--tg-theme-button-text-color, #ffffff);
-            background-color: var(--tg-theme-button-color, #0088cc);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            max-width: 280px;
-        }
+    button {
+      margin-top: 24px;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 500;
+      border: none;
+      border-radius: 10px;
+      color: var(--tg-theme-button-text-color, #FFFFFF);
+      background-color: var(--tg-theme-button-color, #8c6060);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      max-width: 280px;
+    }
 
-        button:hover {
-            transform: scale(1.02);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
+    button:hover {
+      transform: scale(1.02);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
 
-        input {
-            width: 100%;
-            max-width: 90%;
-            padding: 14px;
-            margin: 10px 0;
-            font-size: 14px;
-            border: 1.5px solid #ccc;
-            border-radius: 6px;
-        }
+    input {
+      width: 100%;
+      max-width: 90%;
+      padding: 14px;
+      margin: 10px 0;
+      font-size: 14px;
+      border: 1.5px solid #ccc;
+      border-radius: 6px;
+    }
 
-        input:focus {
-            border-color: #0088cc;
-            outline: none;
-        }
+    input:focus {
+      border-color: #0088cc;
+      outline: none;
+    }
 
-        #error {
-            color: red;
-            margin-top: 6px;
-            font-size: 14px;
-        }
+    #error {
+      color: red;
+      margin-top: 6px;
+      font-size: 14px;
+    }
 
-        @media (max-width: 360px) {
-            h1 {
-                font-size: 18px;
-            }
+    @media (max-width: 360px) {
+      h1 {
+        font-size: 18px;
+      }
 
-            button {
-                font-size: 15px;
-                padding: 12px 20px;
-            }
+      button {
+        font-size: 15px;
+        padding: 12px 20px;
+      }
 
-            input {
-                font-size: 13px;
-            }
+      input {
+        font-size: 13px;
+      }
 
-            .logo-header img {
-                width: 28px;
-                height: 28px;
-            }
-        }
-    </style>
+      .logo-header img {
+        width: 28px;
+        height: 28px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Экран 1: Каталог -->
-    <div id="main">
-        <div class="logo-header">
-            <img src="https://cdn-icons-png.flaticon.com/512/263/263115.png" alt="Shop Logo">
-            <h1>Магазин</h1>
-        </div>
-        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/3595/3595455.png" alt="Icon">
-        <p>Добро пожаловать в наш магазин! Нажмите "Купить", чтобы оформить заказ.</p>
-        <button id="buy">Купить</button>
+  <!-- Экран 1: Каталог -->
+  <div id="main" class="active">
+    <div class="logo-header">
+      <img src="https://cdn-icons-png.flaticon.com/512/263/263115.png" alt="Shop Logo" />
+      <h1>Магазин</h1>
     </div>
+    <img class="icon" src="https://cdn-icons-png.flaticon.com/512/3595/3595455.png" alt="Icon" />
+    <p>Добро пожаловать в наш магазин! Нажмите "Купить", чтобы оформить заказ.</p>
+    <button id="buy">Купить</button>
+  </div>
 
-    <!-- Экран 2: Форма -->
-    <form id="form" class="hidden">
-        <h1>Оформление</h1>
-        <input type="text" id="user_name" placeholder="Имя">
-        <input type="email" id="user_email" placeholder="Email">
-        <input type="tel" id="user_phone" placeholder="Телефон">
-        <div id="error"></div>
-        <button type="button" id="order">Оформить заказ</button>
-    </form>
+  <!-- Экран 2: Форма -->
+  <form id="form">
+    <h1>Оформление</h1>
+    <input type="text" id="user_name" placeholder="Имя" />
+    <input type="email" id="user_email" placeholder="Email" />
+    <input type="tel" id="user_phone" placeholder="Телефон" />
+    <div id="error"></div>
+    <button type="button" id="order">Оформить заказ</button>
+  </form>
 
-    <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-        const buyBtn = document.getElementById("buy");
-        const orderBtn = document.getElementById("order");
+    const buyBtn = document.getElementById("buy");
+    const orderBtn = document.getElementById("order");
 
-        const mainScreen = document.getElementById("main");
-        const formScreen = document.getElementById("form");
+    const mainScreen = document.getElementById("main");
+    const formScreen = document.getElementById("form");
 
-        buyBtn.addEventListener("click", () => {
-            mainScreen.classList.add("hidden");
-            formScreen.classList.remove("hidden");
+    buyBtn.addEventListener("click", () => {
+      mainScreen.classList.remove("active");
+      formScreen.classList.add("active");
 
-            const user = tg.initDataUnsafe.user;
-            if (user?.first_name) {
-                document.getElementById("user_name").value = user.first_name + (user.last_name ? " " + user.last_name : "");
-            }
-        });
+      const user = tg.initDataUnsafe.user;
+      if (user?.first_name) {
+        document.getElementById("user_name").value = user.first_name + (user.last_name ? " " + user.last_name : "");
+      }
+    });
 
-        orderBtn.addEventListener("click", () => {
-            const name = document.getElementById("user_name").value.trim();
-            const email = document.getElementById("user_email").value.trim();
-            const phone = document.getElementById("user_phone").value.trim();
-            const errorDiv = document.getElementById("error");
+    orderBtn.addEventListener("click", () => {
+      const name = document.getElementById("user_name").value.trim();
+      const email = document.getElementById("user_email").value.trim();
+      const phone = document.getElementById("user_phone").value.trim();
+      const errorDiv = document.getElementById("error");
 
-            errorDiv.textContent = "";
+      errorDiv.textContent = "";
 
-            if (name.length < 2) {
-                errorDiv.textContent = "Введите корректное имя.";
-                return;
-            }
-            if (email.length < 5 || !email.includes("@")) {
-                errorDiv.textContent = "Введите корректный email.";
-                return;
-            }
-            if (phone.length < 5) {
-                errorDiv.textContent = "Введите номер телефона.";
-                return;
-            }
+      if (name.length < 2) {
+        errorDiv.textContent = "Введите корректное имя.";
+        return;
+      }
+      if (email.length < 5 || !email.includes("@")) {
+        errorDiv.textContent = "Введите корректный email.";
+        return;
+      }
+      if (phone.length < 5) {
+        errorDiv.textContent = "Введите номер телефона.";
+        return;
+      }
 
-            const data = { name, email, phone };
-            tg.sendData(JSON.stringify(data));
-            tg.close();
-        });
-    </script>
+      const data = { name, email, phone };
+      tg.sendData(JSON.stringify(data));
+      tg.close();
+    });
+  </script>
 </body>
 </html>
 
