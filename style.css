@@ -203,9 +203,9 @@ input:focus {
 }
 
 .quantity-control button {
-  background-color: black;
+  background-color: #ffffff;
   margin-top: 0;
-  color: white;
+  color: #000000;
   border: none;
   border-radius: 6px;
   width: 32px;
