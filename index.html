@@ -23,23 +23,17 @@
       overflow-x: hidden;
     }
 
+    /* Фолбек цвета для случаев вне Telegram */
     body {
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 16px;
+      background-color: var(--tg-theme-bg-color, #ffffff);
+      color: var(--tg-theme-text-color, #000000);
     }
 
-    #main #form {
-      display: block;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      max-width: 420px;
-      transition: opacity 0.3s ease;
-    }
-
-    #form {
+    #main, #form {
       display: none;
       flex-direction: column;
       align-items: center;
@@ -49,7 +43,7 @@
     }
 
     .active {
-      display: block;
+      display: flex;
     }
 
     .logo-header {
@@ -120,6 +114,7 @@
       color: red;
       margin-top: 6px;
       font-size: 14px;
+      min-height: 20px;
     }
 
     @media (max-width: 360px) {
@@ -166,8 +161,14 @@
   </div>
 
   <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    // Проверяем наличие Telegram WebApp API
+    const tg = window.Telegram?.WebApp || null;
+
+    if (tg) {
+      tg.expand();
+    } else {
+      console.warn("Telegram WebApp SDK не доступен. Работаем в обычном браузере.");
+    }
 
     const buyBtn = document.getElementById("buy");
     const orderBtn = document.getElementById("order");
@@ -179,9 +180,11 @@
       mainScreen.classList.remove("active");
       formScreen.classList.add("active");
 
-      const user = tg.initDataUnsafe.user;
-      if (user?.first_name) {
-        document.getElementById("user_name").value = user.first_name + (user.last_name ? " " + user.last_name : "");
+      if (tg) {
+        const user = tg.initDataUnsafe?.user;
+        if (user?.first_name) {
+          document.getElementById("user_name").value = user.first_name + (user.last_name ? " " + user.last_name : "");
+        }
       }
     });
 
@@ -207,8 +210,13 @@
       }
 
       const data = { name, email, phone };
-      tg.sendData(JSON.stringify(data));
-      tg.close();
+
+      if (tg) {
+        tg.sendData(JSON.stringify(data));
+        tg.close();
+      } else {
+        alert("Заказ оформлен:\n" + JSON.stringify(data, null, 2));
+      }
     });
   </script>
 </body>
