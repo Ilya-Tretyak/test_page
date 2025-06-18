@@ -70,6 +70,25 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
+    #form {
+        display: none;
+        text-align: center;
+    }
+
+    input {
+        width: 90%;
+        outline: none;
+        margin: 10px 5%;
+        padding: 15px 10px;
+        font-size: 14px;
+        border: 2px solid silver;
+        border-radius: 5px;
+    }
+
+    input:focus {
+        border-color: #db5d5d;
+    }
+
     @media (max-width: 480px) {
         h1 {
             font-size: 20px;
@@ -91,26 +110,32 @@
 </style>
 </head>
 <body>
-    <h1>Магазин</h1>
-    <img src="https://cdn-icons-png.flaticon.com/512/3595/3595455.png" alt="Icon">
-    <button id="buy">Купить</button>
+    <div id="main">
+        <h1>Магазин</h1>
+        <img src="https://cdn-icons-png.flaticon.com/512/3595/3595455.png" alt="Icon">
+        <button id="buy">Купить</button>
+    </div>
+    <form id="form">
+        <input type="text" id="user_name" placeholder="Имя">
+        <input type="text" id="user_email" placeholder="Email">
+        <input type="text" id="user_phone" placeholder="Телефон">
+        <button id="order">Оформить</button>
+    </form>
 
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const tg = window.Telegram.WebApp;
-            tg.ready();
+        let tg = window.Telegram.WebApp;
+        let buy = document.getElementById("buy")
+        let order = document.getElementById("order")
 
-            tg.MainButton.setText("Оформить заказ");
-            tg.MainButton.onClick(() => {
-                tg.sendData("order=1");
-                tg.close();
-            });
+        buy.addEventListener("click", () => {
+            document.getElementById("main").style.display = "none";
+            document.getElementById("form").style.display = "block";
+            document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
+        })
 
-            const buyBtn = document.getElementById("buy");
-            buyBtn.addEventListener("click", () => {
-                tg.MainButton.show();
-            });
-        });
+        order.addEventListener("click", () => {
+            tg.close();
+        })
     </script>
 </body>
 </html>
