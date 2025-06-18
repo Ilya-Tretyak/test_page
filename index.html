@@ -3,10 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Shop</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;500&display=swap");
 
-    <!-- Шрифт Montserrat -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 200;
+            color: var(--tg-theme-text-color);
+            background: var(--tg-theme-bg-color);
+        }
+
+        #main {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1  {
+            margin-top: 50px;
+            margin-bottom: 10px;
+        }
+
+        img {
+            width: 70px;
+            margin: 30px auto;
+        }
+
+        p {
+            max-width: 90%;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        button {
+            border: 0;
+            border-radius: 5px;
+            margin-top: 50px;
+            height: 60px;
+            width: 200px;
+            font-size: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 500ms ease;
+            color: var(--tg-theme-button-color);
+            background: var(--tg-theme-secondary-bg-color);
+        }
+    </style>
 </head>
 <body>
     <div id="main">
@@ -18,5 +66,29 @@
 
     <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js?57"></script>
+
+    <!-- Инициализация и логика -->
+    <script>
+        // Получаем объект Telegram WebApp
+        const tg = window.Telegram.WebApp;
+
+        // Готовность к работе
+        tg.ready();
+
+        // Открыть основную кнопку (если хочешь)
+        tg.MainButton.setText("Оформить заказ");
+        tg.MainButton.onClick(() => {
+            tg.sendData("order=1"); // отправка данных в бота
+            tg.close(); // закрытие WebApp
+        });
+
+        // Кнопка "Купить"
+        document.getElementById("buy").addEventListener("click", () => {
+            tg.MainButton.show(); // показать основную кнопку Telegram
+        });
+
+        // Пример логов
+        console.log("Пользователь:", tg.initDataUnsafe?.user?.username);
+    </script>
 </body>
 </html>
