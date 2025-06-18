@@ -14,36 +14,17 @@
       box-sizing: border-box;
     }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      font-family: 'Montserrat', sans-serif;
-      background-color: var(--tg-theme-bg-color, #ffffff);
-      color: var(--tg-theme-text-color, #000000);
-      overflow-x: hidden;
-    }
-
-    /* Фолбек цвета для случаев вне Telegram */
     body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 200;
       background-color: var(--tg-theme-bg-color, #ffffff);
       color: var(--tg-theme-text-color, #000000);
     }
 
-    #main, #form {
-      display: none;
-      flex-direction: column;
-      align-items: center;
+    #main {
       width: 100%;
-      max-width: 420px;
-      transition: opacity 0.3s ease;
-    }
-
-    .active {
-      display: flex;
+      padding: 20px;
+      text-align: center;
     }
 
     .logo-header {
@@ -59,29 +40,27 @@
     }
 
     h1 {
-      font-size: 22px;
-      text-align: center;
+      margin-top: 50px;
+      margin-bottom: 10px;
     }
 
-    img.icon {
-      width: 64px;
-      margin: 20px 0;
+    img {
+      width: 70px;
+      margin: 30px 0;
     }
 
     p {
-      font-size: 15px;
-      line-height: 1.5;
-      text-align: center;
-      margin: 10px 0;
+      width: 350px;
+      margin: 0 auto;
     }
 
     button {
-      margin-top: 24px;
+      margin-top: 50px;
       padding: 14px 24px;
       font-size: 16px;
       font-weight: 500;
-      border: none;
-      border-radius: 10px;
+      border: 0;
+      border-radius: 5px;
       color: var(--tg-theme-button-text-color, #ffffff);
       background-color: var(--tg-theme-button-color, #0088cc);
       cursor: pointer;
@@ -140,12 +119,12 @@
 </head>
 <body>
   <!-- Экран 1: Каталог -->
-  <div id="main" class="active">
+  <div id="main">
     <div class="logo-header">
       <img src="https://cdn-icons-png.flaticon.com/512/263/263115.png" alt="Shop Logo" />
       <h1>Магазин</h1>
     </div>
-    <img class="icon" src="https://cdn-icons-png.flaticon.com/512/3595/3595455.png" alt="Icon" />
+    <img src="https://cdn-icons-png.flaticon.com/512/3595/3595455.png" alt="Icon" />
     <p>Добро пожаловать в наш магазин! Нажмите "Купить", чтобы оформить заказ.</p>
     <button id="buy">Купить</button>
   </div>
@@ -161,63 +140,20 @@
   </div>
 
   <script>
-    // Проверяем наличие Telegram WebApp API
-    const tg = window.Telegram?.WebApp || null;
+    let tg = window.Telegram.WebApp;
+    let buy = document.getElementById("buy")
+    let order = document.getElementById("order")
 
-    if (tg) {
-      tg.expand();
-    } else {
-      console.warn("Telegram WebApp SDK не доступен. Работаем в обычном браузере.");
-    }
+    buy.addEventListener("click", () => {
+      document.getElementById("main").style.display = "none";
+      document.getElementById("form").style.display = "block";
+      document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
+    })
 
-    const buyBtn = document.getElementById("buy");
-    const orderBtn = document.getElementById("order");
+    order.addEventListener("click", () => {
 
-    const mainScreen = document.getElementById("main");
-    const formScreen = document.getElementById("form");
-
-    buyBtn.addEventListener("click", () => {
-      mainScreen.classList.remove("active");
-      formScreen.classList.add("active");
-
-      if (tg) {
-        const user = tg.initDataUnsafe?.user;
-        if (user?.first_name) {
-          document.getElementById("user_name").value = user.first_name + (user.last_name ? " " + user.last_name : "");
-        }
-      }
-    });
-
-    orderBtn.addEventListener("click", () => {
-      const name = document.getElementById("user_name").value.trim();
-      const email = document.getElementById("user_email").value.trim();
-      const phone = document.getElementById("user_phone").value.trim();
-      const errorDiv = document.getElementById("error");
-
-      errorDiv.textContent = "";
-
-      if (name.length < 2) {
-        errorDiv.textContent = "Введите корректное имя.";
-        return;
-      }
-      if (email.length < 5 || !email.includes("@")) {
-        errorDiv.textContent = "Введите корректный email.";
-        return;
-      }
-      if (phone.length < 5) {
-        errorDiv.textContent = "Введите номер телефона.";
-        return;
-      }
-
-      const data = { name, email, phone };
-
-      if (tg) {
-        tg.sendData(JSON.stringify(data));
-        tg.close();
-      } else {
-        alert("Заказ оформлен:\n" + JSON.stringify(data, null, 2));
-      }
-    });
+      tg.close()
+    })
   </script>
 </body>
 </html>
