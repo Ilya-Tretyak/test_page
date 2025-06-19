@@ -9,8 +9,8 @@
 body {
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
-  background-color: #ffffff;
-  color:  #000000;
+  background-color: #ffffff !important;
+  color: #000000 !important;
 }
 
 #main {
@@ -41,7 +41,7 @@ button {
   font-weight: 500;
   border: 0;
   border-radius: 5px;
-  color: var(--tg-theme-button-text-color, #ffffff);
+  color: #ffffff;
   background-color: black;
   cursor: pointer;
   transition: all 0.3s ease;
