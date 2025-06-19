@@ -240,3 +240,26 @@ input:focus {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.media-slider {
+  overflow-x: auto;
+  display: flex;
+  width: 100%;
+  border-radius: 10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.media-track {
+  display: flex;
+  gap: 10px;
+}
+
+.media-item {
+  min-width: 100%;
+  max-width: 100%;
+  height: auto;
+  scroll-snap-align: start;
+  border-radius: 10px;
+  object-fit: cover;
+}
