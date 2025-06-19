@@ -38,6 +38,9 @@ catalog.addEventListener("click", function(e) {
     const productDiv = e.target.closest(".product");
     const title = e.target.dataset.title;
 
+    const priceElement = productDiv.querySelector("[data-price]");
+    const price = parseFloat(priceElement?.dataset.price);
+
     // Размер — радиокнопка, если есть
     const sizeRadio = productDiv.querySelector("input[type='radio']:checked");
     const selectedSize = sizeRadio ? sizeRadio.value : null;
@@ -48,7 +51,8 @@ catalog.addEventListener("click", function(e) {
     selectedProduct = {
       title: title,
       size: selectedSize,
-      quantity: selectedQuantity
+      quantity: selectedQuantity,
+      price: price,
     };
 
     document.getElementById("catalog").style.display = "none";
@@ -90,7 +94,8 @@ order.addEventListener("click", () => {
     phone: phone,
     product: selectedProduct.title,
     size: selectedProduct.size,
-    quantity: selectedProduct.quantity
+    quantity: selectedProduct.quantity,
+    price: selectedProduct.price,
   };
 
   tg.sendData(JSON.stringify(data));
