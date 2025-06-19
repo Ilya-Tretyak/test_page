@@ -9,8 +9,8 @@
 body {
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
-  background-color: var(--tg-theme-bg-color, #ff0000);
-  color: var(--tg-theme-text-color, #000000);
+  background-color: #ffffff;
+  color:  #000000;
 }
 
 #main {
